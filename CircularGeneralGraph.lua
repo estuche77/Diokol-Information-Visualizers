@@ -2,8 +2,17 @@ function setup()
     size(640, 500)
     stroke(0)
     fill(0)
-    local f = loadFont("data/Karla.ttf",12)
-    nodes = init(30)
+	local f = loadFont("data/Karla.ttf",12)
+	math.randomseed(os.time())
+
+	nodes = init(30)
+
+	order = orderedArray(nodes)
+	circularGraphLayout(nodes,order,160,200,300)
+
+	nodesB = deepCopy(nodes)
+	barycenter(nodesB,order)
+	circularGraphLayout(nodesB,order,480,200,300)
 end
 
 function draw()
@@ -12,15 +21,29 @@ function draw()
 	text("Original",150,400)
 	text("Optimized",430,400)
 
-	local order = orderedArray(nodes)
-	circularGraphLayout(nodes,order,160,200,300)
 	drawLinks(nodes)
 	drawNodes(nodes)
 	
-	barycenter(nodes,order)
-	circularGraphLayout(nodes,order,480,200,300)
-	drawLinks(nodes)
-	drawNodes(nodes)
+	drawLinks(nodesB)
+	drawNodes(nodesB)
+end
+
+function deepCopy(object)
+    local lookup_table = {}
+    local function _copy(object)
+        if type(object) ~= "table" then
+            return object
+        elseif lookup_table[object] then
+            return lookup_table[object]
+        end
+        local new_table = {}
+        lookup_table[object] = new_table
+        for index, value in pairs(object) do
+            new_table[_copy(index)] = _copy(value)
+        end
+        return setmetatable(new_table, getmetatable(object))
+    end
+    return _copy(object)
 end
 
 function Node()
@@ -49,7 +72,7 @@ function init(N)
 		node.neighbors = {}
 		local m = math.floor((math.random() * 2) + 1)
         for j = 1, m do
-            table.insert(node.neighbors, math.floor((math.random() * N) + 1))
+            table.insert(node.neighbors, math.floor((math.random() * (N-1)) + 1))
         end
         table.insert(nodes,node)
     end
