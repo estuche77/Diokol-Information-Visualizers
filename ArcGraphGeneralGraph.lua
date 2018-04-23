@@ -2,8 +2,17 @@ function setup()
     size(640, 500)
     stroke(0)
     noFill()
-    local f = loadFont("data/Karla.ttf",12)
-    nodes = init(30)
+	local f = loadFont("data/Karla.ttf",12)
+	math.randomseed(os.time())
+	
+	nodes = init(30)
+
+	order = orderedArray(nodes)
+	linearGraphLayout(nodes,order,20,300,300)
+	
+	nodesB = deepCopy(nodes)
+	barycenter(nodesB,order)
+	linearGraphLayout(nodesB,order,330,300,300)
 end
 
 function draw()
@@ -12,15 +21,29 @@ function draw()
 	text("Original",150,400)
 	text("Optimized",430,400)
 
-	local order = orderedArray(nodes)
-	linearGraphLayout(nodes,order,20,300,300)
     drawArcs(nodes)
     drawNodes(nodes)
 	
-	barycenter(nodes,order)
-	linearGraphLayout(nodes,order,330,300,300)
-    drawArcs(nodes)
-    drawNodes(nodes)
+    drawArcs(nodesB)
+    drawNodes(nodesB)
+end
+
+function deepCopy(object)
+    local lookup_table = {}
+    local function _copy(object)
+        if type(object) ~= "table" then
+            return object
+        elseif lookup_table[object] then
+            return lookup_table[object]
+        end
+        local new_table = {}
+        lookup_table[object] = new_table
+        for index, value in pairs(object) do
+            new_table[_copy(index)] = _copy(value)
+        end
+        return setmetatable(new_table, getmetatable(object))
+    end
+    return _copy(object)
 end
 
 function Node()
@@ -63,7 +86,7 @@ function drawArcs(nodes)
 		for j = 1, #neighbors do
 			local k = neighbors[j]
 			local radius = math.abs(nodes[i].x-nodes[k].x)/2
-			arc((nodes[i].x+nodes[k].x)/2,nodes[i].y,radius,radius,PI,2*PI,OPEN)
+			arc((nodes[i].x+nodes[k].x)/2,nodes[i].y,radius*2,radius*2,PI,2*PI,OPEN)
         end
     end
 end
@@ -71,7 +94,7 @@ end
 function drawNodes(nodes)
 	local N = #nodes
 	for i = 1, N do
-		arc(nodes[i].x,nodes[i].y,2,2,0,2*PI,OPEN);
+		arc(nodes[i].x,nodes[i].y,3,3,0,2*PI,OPEN);
     end
 end
 
