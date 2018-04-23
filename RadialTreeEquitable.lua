@@ -1,10 +1,5 @@
 require 'data/datalist'
 
-local TOP = 101
-local BOTTOM = 102
-local RIGHT = 103
-local LEFT = 104
-local CENTER = 105
 local BOX = 200
 local ROUND = 201
 
@@ -14,13 +9,13 @@ function setup()
     noFill()
     strokeWeight(0.5)
     local f = loadFont("data/Karla.ttf",12)
-    root = init()
+	root = init()
+	initialize(root)
+	RadialTree(root)
 end
 
 function draw()
-    background(255)
-	initialize(root)
-	RadialTree(root)
+	background(255)
 	drawLinks(root)
 	drawNodes(root,3,ROUND)
 end
@@ -47,7 +42,7 @@ end
 function drawNodes(node,size,symbol)
     local n = #node.children
 	if symbol == ROUND then
-		arc(node.x,node.y,size,size,0,2 * PI)
+		arc(node.x,node.y,size,size,0,2 * PI,OPEN)
 	else
         rect(node.x-size/2,node.y-size/2,size,size)
     end
