@@ -1,8 +1,5 @@
 TOP = 101
 BOTTOM = 102
-RIGHT = 103
-LEFT = 104
-CENTER = 105
 BOX = 200
 ROUND = 201
 
@@ -18,7 +15,8 @@ end
 
 function draw()
     background(255)
-    drawNodes(root,2,ROUND)
+    drawNodes(root,3,ROUND)
+    --drawLabels(root,TOP,4,0)
 	drawLinks(root,350,300)
 end
 
@@ -433,7 +431,7 @@ function drawLinks(node,x,y)
         end
 		drawLinks(child,x,y)
 	end
-	ArcBorder(x,y,radius,radius,minAngle,maxAngle)
+    arc(x,y,radius*2,radius*2,minAngle,maxAngle,OPEN)
 	local medAngle = (minAngle + maxAngle)/2
 	local xT = (radius*math.cos(medAngle))+x
     local yT = (radius*math.sin(medAngle))+y
@@ -450,7 +448,7 @@ end
 function drawNodes(node,size,symbol)
 	local n = #node.children
 	if (symbol==ROUND) then
-		arc(node.x,node.y,size,size,0,2 * PI)
+		arc(node.x,node.y,size,size,0,2*PI,OPEN)
 	else
         rect(node.x-size/2,node.y-size/2,size,size)
     end
@@ -471,12 +469,12 @@ function drawLabels(node,position,offset,degrees)
 		dy = offset
     elseif position == RIGHT then
  		dx = -offset
-         textAlign(RIGHT)
+        textAlign(RIGHT)
     elseif position == LEFT then
 		dx = offset
 		textAlign(LEFT)
 	end
-    --local h = draw.measureText('M').width - 2
+    
     local h = 2
 	pushMatrix()
 	translate(node.x,node.y)
@@ -574,30 +572,4 @@ function initialize(node)
             end
         end
 	end
-end
-
-function ArcBorder(x, y, r1, r2, a1, a2)
-	local px
-	local py
-	local angle
-	local i = 0
-    local steps = 30
-    pushMatrix()
-	beginShape()
-		while i <= steps do
-			angle = map(i, 0, steps, a1, a2)
-			px = x + math.cos(angle) * r1
-			py = y + math.sin(angle) * r1
-			vertex(px, py)
-			i = i + 1
-		end
-		while i >= 0 do
-			angle = map(i, 0, steps, a1, a2)
-			px = x + math.cos(angle) * r2
-			py = y + math.sin(angle) * r2
-			vertex(px, py)
-			i = i - 1
-		end
-    endShape(CLOSE)
-    popMatrix()
 end
