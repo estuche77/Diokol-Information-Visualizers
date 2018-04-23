@@ -1,9 +1,5 @@
 local VERTICAL = 0
 local HORIZONTAL = 1
-local BOTTOM = 2
-local TOP = 3
-local RIGHT = 4
-local LEFT = 5
 
 function setup()
     size(640, 500)
@@ -104,7 +100,7 @@ end
 function drawNodes(nodes)
 	local N = #nodes
     for i = 1, N do
-		arc(nodes[i].x,nodes[i].y,2,2,0,2*PI)
+		arc(nodes[i].x,nodes[i].y,4,4,0,2*PI)
 	end
 end
 

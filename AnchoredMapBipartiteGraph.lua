@@ -87,7 +87,7 @@ end
 function drawNodes(nodes)
 	local N = #nodes
 	for i = 1, N do
-		arc(nodes[i].x,nodes[i].y,2,2,0,2*PI,OPEN)
+		arc(nodes[i].x,nodes[i].y,4,4,0,2*PI,OPEN)
 	end
 end
 
