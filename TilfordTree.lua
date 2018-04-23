@@ -1,8 +1,5 @@
 local TOP = 101
 local BOTTOM = 102
-local RIGHT = 103
-local LEFT = 104
-local CENTER = 105
 local BOX = 200
 local ROUND = 201
 
@@ -10,18 +7,24 @@ local DISTANCE = 30
 
 function setup()
     size(640, 480)
-	stroke(0)
     local f = loadFont("data/Karla.ttf",12)
-    root = init()
+	root = init()
+	initialize(root,0)
+	TilfordLayout(root,60,120)
 end
 
 function draw()
-    background(255)
-    initialize(root,0)
-	TilfordLayout(root,60,120)
+	background(255)
+	
+	stroke(0)
+	fill(0)
 	drawLinks(root)
-    fill(153)
+	
+	noStroke()
+	fill(153)
 	drawNodes(root,6,ROUND)
+	
+	stroke(0)
     fill(0)
 	drawLabels(root,LEFT,10,45)
 end
@@ -88,7 +91,6 @@ function drawLinks(node)
 	for i = 1, n do
 		child = node.children[i]
         line(node.x,node.y,child.x,child.y)
-        stroke(0)
 		drawLinks(child)
 	end
 end
@@ -122,7 +124,7 @@ function drawLabels(node,position,offset,degrees)
 		dx = offset
 		textAlign(LEFT)
 	end
-    --local h = draw.measureText('M').width - 2
+	
     local h = 2
 	pushMatrix()
 	translate(node.x,node.y)
