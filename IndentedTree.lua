@@ -7,7 +7,7 @@ function setup()
 	fill(0)
 	local f = loadFont("data/Karla.ttf",12)
 	
-	local root = init()
+	root = init()
 	NodoSpace(root)
 	indent(root,10,10,620,460)
 end

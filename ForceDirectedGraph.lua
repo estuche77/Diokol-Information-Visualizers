@@ -63,9 +63,9 @@ function init(N,w,h)
 		node.neighbors = {}
         node.x = math.random() * w
 		node.y = math.random() * h
-		local m = math.floor(math.random() * 2)
+		local m = math.floor(math.random() * 2 + 1)
         for j = 1, m do
-            table.insert(node.neighbors, math.floor(math.random() * N) + 1))
+            table.insert(node.neighbors, math.floor((math.random() * N) + 1))
         end
         table.insert(nodes, node)
     end
